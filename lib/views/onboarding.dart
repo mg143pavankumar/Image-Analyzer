@@ -127,7 +127,7 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
                   FadeAnimation(
                       1,
                       Text(
-                        "Welcome",
+                        "Image Analyzer",
                         style: TextStyle(color: Colors.white, fontSize: 50),
                       )),
                   SizedBox(
@@ -136,7 +136,7 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
                   FadeAnimation(
                       1.3,
                       Text(
-                        "Our application will identify text in an image and extract those texts in few seconds",
+                        "A mobile application to decompose the given image into objects and extract text from it. ",
                         style: TextStyle(
                             color: Colors.white.withOpacity(.7),
                             height: 1.4,
