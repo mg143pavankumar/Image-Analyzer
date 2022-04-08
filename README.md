@@ -18,7 +18,7 @@
 
 The problem statement was originally proposed by <a href="https://www.figmd.com/">FIGmd<a>, who is a leader in providing healthcare solutions & rapid deployment of secure, interop driven, clinical, claims & quality data acquisition platforms.  
   
-The mobile application is very easy to use. We can capture an image of an object or text. Next, the image will be analyzed by our Machine learning model, which will return the text contained in the image instantly. If there is no text present in the given image, the model will look for possible types of objects present in the image. 
+The mobile application is very easy to use. We can capture an image of an object or text. Next, the image will be analyzed by our categorization model, which will return the text contained in the image instantly. If there is no text present in the given image, the model will look for possible types of objects present in the image. 
   
 The application is divided into different modules:
 
@@ -35,7 +35,6 @@ The Camera module will allow a user to capture a picture of any object. The modu
 ### 3. Result:
   
 The result field will display the text obtained from the image and will classify the image as text or object.
-  
   
   
 ## Getting started
