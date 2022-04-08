@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:image_to_text/constants/constants.dart';
+import 'package:image_to_text/views/onboarding.dart';
 
 enum AppState {
   free,
@@ -61,14 +63,22 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  Future<bool> _onWillPop() async {
+    Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => OnBoarding(),
+      ),
+    ).then((value) {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('OCR App'),
-      ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
+        backgroundColor: AppColors.blueColor,
         onPressed: () {
           if (state == AppState.free) {
             getImage();
@@ -78,61 +88,123 @@ class _HomePageState extends State<HomePage> {
         },
         child: buildButtonIcon(),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
+      body: WillPopScope(
+        onWillPop: _onWillPop,
+        child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
-              _image == null
-                  ? Text(
-                      'No image selected.',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    )
-                  : Container(
-                      height: 300, width: 300, child: Image.file(_image)),
-              SizedBox(height: 20),
-              script.text != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: TextFormField(
-                        controller: script,
-                        minLines: 5,
-                        maxLines: 100,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        onChanged: (val) {
-                          setState(() {});
-                        },
-                        decoration: InputDecoration(
-                          prefixIcon:
-                              Icon(Icons.text_fields, color: Colors.white),
-                          focusColor: Colors.black26,
-                          fillColor: Colors.black26,
-                          filled: true,
-                          hintText: "Address",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                              color: Colors.white60,
-                              width: 1.0,
+              SizedBox(
+                height: 50,
+              ),
+              Text(
+                "Image Analyzer",
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.blueColor,
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 40),
+                      _image == null
+                          ? Padding(
+                              padding: const EdgeInsets.all(32.0),
+                              child: Container(
+                                width: double.infinity,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blueColor.withOpacity(
+                                    0.2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'No image selected.',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color:
+                                          AppColors.blueColor.withOpacity(0.5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container(
+                              height: 300,
+                              width: 300,
+                              child: Image.file(_image)),
+                      SizedBox(height: 20),
+                      script.text == ''
+                          ? Padding(
+                              padding: const EdgeInsets.all(32.0),
+                              child: Container(
+                                width: double.infinity,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  color: AppColors.blueColor.withOpacity(
+                                    0.2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "No Text found",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color:
+                                          AppColors.blueColor.withOpacity(0.5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(32.0),
+                              child: TextFormField(
+                                controller: script,
+                                minLines: 5,
+                                maxLines: 100,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                                onChanged: (val) {
+                                  setState(() {});
+                                },
+                                decoration: InputDecoration(
+                                  focusColor: AppColors.blueColor,
+                                  fillColor: AppColors.blueColor,
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                    color: Colors.white.withOpacity(0.5),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide: BorderSide(
+                                      color: Colors.white60,
+                                      width: 4.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                              color: Colors.white60,
-                              width: 4.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  : Text("No Text found"),
-              SizedBox(height: 20),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
