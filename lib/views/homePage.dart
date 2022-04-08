@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "No Text found",
+                                    "No Text found. It is an object.",
                                     style: TextStyle(
                                       fontSize: 20,
                                       color:
